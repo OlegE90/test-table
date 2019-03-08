@@ -103,7 +103,7 @@ class App extends React.Component {
   countResultByColumn = (table, index = null) => {
     return table.reduce((result, currentValue) => {
       if (Number.isInteger(index)) {
-        result = result + parseInt(currentValue[index], 10);
+        result = result + currentValue[index];
       } else {
         result = currentValue.map((value, index) => {
           return (result[index] || 0) + value;
