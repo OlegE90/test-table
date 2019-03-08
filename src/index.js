@@ -11,11 +11,11 @@ const data = [
 ];
 
 class App extends React.Component {
-  constructor (props) {
-  	super(props);
+  constructor(props) {
+    super(props);
 
-		this.state = this.getFormattedDateForState(props.data)
-	}
+    this.state = this.getFormattedDateForState(props.data)
+  }
 
   getFormattedDateForState = (mainData) => {
     const data = mainData.map((items) => [...items]);
@@ -30,13 +30,13 @@ class App extends React.Component {
       number: '',
       delta: 0
     }
-	};
+  };
 
-	handleColumnClick = (index) => () => {
-		this.setState({
+  handleColumnClick = (index) => () => {
+    this.setState({
       indexSelectedColumn: index
-		})
-	};
+    })
+  };
 
   handleNumberChange = (event) => {
     const value = event.target.value;
@@ -45,14 +45,14 @@ class App extends React.Component {
       this.setState({
         number: value
       })
-		}
+    }
   };
 
   handleResetButtonClick = () => {
-  	this.setState({
-			...this.getFormattedDateForState(this.props.data)
-		})
-	};
+    this.setState({
+      ...this.getFormattedDateForState(this.props.data)
+    })
+  };
 
   handleRecountButtonClick = () => {
     const {
@@ -77,66 +77,67 @@ class App extends React.Component {
       delta: delta + this.countResultByColumn(newBody, indColumn) - this.countResultByColumn(table.body, indColumn)
     })
 
-	};
+  };
 
   renderTableHead = () => {
-  	const {
+    const {
       table,
       indexSelectedColumn
-		} = this.state;
+    } = this.state;
 
     return (
-    	<thead>
-				<tr>
-          <th></th>
-					{
-						table.header.map((value, index) => (
-							<th key={ value } className={ indexSelectedColumn === index ? 'active' : '' } onClick={ this.handleColumnClick(index) }>{value}</th>
-						))
-					}
-				</tr>
-			</thead>
+      <thead>
+      <tr>
+        <th></th>
+        {
+          table.header.map((value, index) => (
+            <th key={value} className={indexSelectedColumn === index ? 'active' : ''}
+                onClick={this.handleColumnClick(index)}>{value}</th>
+          ))
+        }
+      </tr>
+      </thead>
     )
   };
 
   countResultByColumn = (table, index = null) => {
-     return table.reduce((result, currentValue) => {
-       if (Number.isInteger(index)) {
-         result = result + parseInt(currentValue[index], 10);
-       } else {
-         result = currentValue.map((value, index) => {
-           return (result[index] || 0) + value;
-         });
-       }
-       return result;
-     }, Number.isInteger(index) ? 0 : []);
+    return table.reduce((result, currentValue) => {
+      if (Number.isInteger(index)) {
+        result = result + parseInt(currentValue[index], 10);
+      } else {
+        result = currentValue.map((value, index) => {
+          return (result[index] || 0) + value;
+        });
+      }
+      return result;
+    }, Number.isInteger(index) ? 0 : []);
   };
 
   renderTableBody = () => {
-    const { table } = this.state;
+    const {table} = this.state;
 
     return (
       <tbody>
-				{
-					table.body.map((items) => (
-						<tr>
-              <td></td>
-							{items.map((value) => <td>{value}</td>)}
-						</tr>
-					))
-				}
-				<tr>
-          <td>Итого:</td>
-          {
-            this.countResultByColumn(table.body).map((value) => <td>{value}</td>)
-          }
-        </tr>
+      {
+        table.body.map((items) => (
+          <tr>
+            <td></td>
+            {items.map((value) => <td>{value}</td>)}
+          </tr>
+        ))
+      }
+      <tr>
+        <td>Итого:</td>
+        {
+          this.countResultByColumn(table.body).map((value) => <td>{value}</td>)
+        }
+      </tr>
       </tbody>
     )
-	};
+  };
 
   renderRunButton = () => {
-    const { indexSelectedColumn, number } = this.state;
+    const {indexSelectedColumn, number} = this.state;
 
     if (!number || !Number.isInteger(indexSelectedColumn)) {
       return null;
@@ -144,36 +145,36 @@ class App extends React.Component {
 
     return (
       <p>
-        <button onClick={ this.handleRecountButtonClick } className="button-run">Применить</button>
+        <button onClick={this.handleRecountButtonClick} className="button-run">Применить</button>
       </p>
     )
   }
 
-	render() {
-		const { number, delta } = this.state;
+  render() {
+    const {number, delta} = this.state;
 
-		return (
-			<div className="App">
-				 <table>
-          { this.renderTableHead() }
-					{ this.renderTableBody() }
+    return (
+      <div className="App">
+        <table>
+          {this.renderTableHead()}
+          {this.renderTableBody()}
         </table>
-				<p className="input-field">
-					<labe>Число:</labe>
-          <input value={ number } onChange={ this.handleNumberChange } />
-				</p>
-        { this.renderRunButton() }
+        <p className="input-field">
+          <labe>Число:</labe>
+          <input value={number} onChange={this.handleNumberChange}/>
+        </p>
+        {this.renderRunButton()}
         <p className="input-field">
           <labe>Дельта:</labe>
-          <input disabled value={ delta }/>
+          <input disabled value={delta}/>
         </p>
         <p>
-          <button onClick={ this.handleResetButtonClick }>Скинуть значения</button>
+          <button onClick={this.handleResetButtonClick}>Скинуть значения</button>
         </p>
-			</div>
-		);
-	}
+      </div>
+    );
+  }
 }
 
 const rootElement = document.getElementById("root");
-ReactDOM.render(<App data={ data } />, rootElement);
+ReactDOM.render(<App data={data}/>, rootElement);
