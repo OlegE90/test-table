@@ -3,4 +3,5 @@
 Затем вызвать комманды:
 
 npm install
+
 npm run start
